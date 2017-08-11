@@ -1,0 +1,33 @@
+{
+    "name": "data-express",
+    "version": "1.0.0",
+    "description": "",
+    "main": "src/index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {
+        "bcrypt-nodejs": "0.0.3",
+        "bluebird": "^3.5.0",
+        "body-parser": "^1.17.2",
+        "cookie-parser": "^1.4.3",
+        "express": "^4.15.4",
+        "express-sessions": "^1.0.6",
+        "mongoose": "^4.11.6",
+        "pug": "^2.0.0-rc.3"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/blslade-neumont/data-express.git"
+    },
+    "contributors": [
+        { "name": "Brandon Slade", "email": "brandonyoyoslade@gmail.com", "url": "http://www.bestoflies.com/" },
+        { "name": "Justin Furtado", "email": "jfurtado@student.neumont.edu" },
+        { "name": "Trent Castro", "email": "castro.andrew.trent@gmail.com" }
+    ],
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/blslade-neumont/data-express/issues"
+    },
+    "homepage": "https://github.com/blslade-neumont/data-express#readme"
+}
