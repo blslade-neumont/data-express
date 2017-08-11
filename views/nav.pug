@@ -1,3 +1,16 @@
 ul
     li
         a(href='/') Home
+    if !user
+        li
+            a(href='/register') Register
+        li
+            a(href='/login') Login
+    else
+        li
+            a(href='/profile') Profile
+        if user.isAdmin
+            li
+                a(href='/users') Users
+        li
+            a(href='/logout') Logout
