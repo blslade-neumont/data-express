@@ -49,6 +49,11 @@ app.get('/logout', (req, res) => {
     res.render('index', { title: 'Home', msg: 'Logout successful' });
 });
 
+app.post('/', urlencodedParser, function(req, res) {
+    console.log(req.body);
+    res.render('index', req.body);
+});
+
 // app.get('/create', route.create);
 // app.get('/edit/:id', route.edit);
 // app.get('/details/:id', route.details);
