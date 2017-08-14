@@ -2,3 +2,20 @@ extends layout
 
 block content
     p Goodbye, World! (Register)
+        form(id='form' method='post' action='/')
+            label Username
+            br
+            input(type='text' name='name_first')
+            br
+            label Password
+            br
+            input(type='text' name='name_last')
+            br
+            label Level of Access
+            br
+            label User
+            input(type='radio' name='user_level' value='0' checked=authority=='User')
+            label Admin
+            input(type='radio' name='user_level' value='1' checked=authority=='Admin')
+            br
+            input(type='submit' value='Submit')
