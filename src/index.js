@@ -1,9 +1,9 @@
 var express = require('express'),
     pug = require('pug'),
     path = require('path'),
-    // route = require('./routes/routes.js'),
+    cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
-    cookieParser = require('cookie-parser');
+    User = require('./models/user');
 
 var app = express();
 
