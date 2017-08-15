@@ -14,12 +14,16 @@ app.use(express.static(path.join(__dirname, '../public')));
 app.use(cookieParser('The answer to the question of life, the universe, and everything'));
 
 var urlencodedParser = bodyParser.urlencoded({ extended: true });
+app.use(urlencodedParser);
 
 app.get('/', (req, res) => {
     var loggedIn = (req.cookies.c1 === 'true');
     if (!loggedIn) {res.render('index', { title: 'Home' });}
     else { res.render('index', {title: 'Home',  msg: "YOU LOGGED IN"}); }
-    
+});
+app.post('/', (req, res) => {
+    console.log(req.body);
+    res.render('index', req.body);
 });
 
 app.get('/register', (req, res) => {
@@ -47,11 +51,6 @@ app.get('/users', (req, res) => {
 app.get('/logout', (req, res) => {
     res.clearCookie('c1');
     res.render('index', { title: 'Home', msg: 'Logout successful' });
-});
-
-app.post('/', urlencodedParser, function(req, res) {
-    console.log(req.body);
-    res.render('index', req.body);
 });
 
 // app.get('/create', route.create);
