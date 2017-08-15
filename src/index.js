@@ -3,7 +3,8 @@ var express = require('express'),
     path = require('path'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
-    User = require('./models/user');
+    bcrypt = require('bcrypt-nodejs'),
+    { User } = require('./models/user');
 
 var app = express();
 
@@ -16,41 +17,78 @@ app.use(cookieParser('The answer to the question of life, the universe, and ever
 var urlencodedParser = bodyParser.urlencoded({ extended: true });
 app.use(urlencodedParser);
 
-app.get('/', (req, res) => {
-    var loggedIn = (req.cookies.c1 === 'true');
-    if (!loggedIn) {res.render('index', { title: 'Home' });}
-    else { res.render('index', {title: 'Home',  msg: "YOU LOGGED IN"}); }
+app.use((req, res, next) => {
+    req.user = req.cookies.currentUser;
+    next();
 });
-app.post('/', (req, res) => {
-    console.log(req.body);
-    res.render('index', req.body);
+
+app.get('/', (req, res) => {
+    let cuser = req.user || 'Not logged in';
+    res.render('index', {req: req, title: 'Home', msg: cuser});
 });
 
 app.get('/register', (req, res) => {
-    res.cookie('c1', 'true');
-    res.render('register', { title: 'Register' });
+    res.render('register', { req: req, title: 'Register' });
+});
+app.post('/register', (req, res) => {
+    let { username, password } = req.body || {};
+    if (!username || !password) {
+        res.status(422).send(`Invalid username or password`);
+        return;
+    }
+    //email, age, animal, coding, president
+    bcrypt.hash(password, null, null, (err, hash) => {
+        let user = new User({
+            username: username,
+            passwordHash: hash,
+            isAdmin: false
+        });
+        user.save((err, user) => {
+            res.cookie('currentUser', JSON.stringify(user));
+            res.redirect('/edit-profile');
+        });
+    });
 });
 
 app.get('/login', (req, res) => {
-    res.cookie('c1', 'true');
-    res.render('login', { title: 'Login' });
+    res.render('login', { req: req, title: 'Login' });
 });
-
-app.get('/profile', (req, res) => {
-    res.render('profile', { title: 'Profile' });
-});
-
-app.get('/edit-profile', (req, res) => {
-    res.render('edit-profile', { title: 'Edit Profile' });
-});
-
-app.get('/users', (req, res) => {
-    res.render('users', { title: 'Users' });
+app.post('/login', (req, res) => {
+    let { username, password } = req.body || {};
+    if (!username || !password) {
+        res.status(422).send(`Invalid username or password`);
+        return;
+    }
+    User.find({ username: username }, (err, user) => {
+        bcrypt.compare(password, user.passwordHash, (err, areSame) => {
+            if (!areSame) {
+                res.status(401).send('Invalid');
+                return;
+            }
+            else {
+                res.cookie('currentUser', JSON.stringify(user));
+                res.redirect('/edit-profile');
+                return;
+            }
+        });
+    });
 });
 
 app.get('/logout', (req, res) => {
-    res.clearCookie('c1');
-    res.render('index', { title: 'Home', msg: 'Logout successful' });
+    res.clearCookie('currentUser');
+    res.redirect('/');
+});
+
+app.get('/profile', (req, res) => {
+    res.render('profile', { req: req, title: 'Profile' });
+});
+
+app.get('/edit-profile', (req, res) => {
+    res.render('edit-profile', { req: req, title: 'Edit Profile' });
+});
+
+app.get('/users', (req, res) => {
+    res.render('users', { req: req, title: 'Users' });
 });
 
 // app.get('/create', route.create);

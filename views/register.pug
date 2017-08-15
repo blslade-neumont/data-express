@@ -1,24 +1,25 @@
 extends layout
 
 block content
-    p Register
-        form(id='form' method='post' action='/')
+    h1 Register
+    form(id='form' method='post' action='/register')
+        div
             label Username
             br
-            input(type='text' name='name_first')
-            br
+            input(type='text' name='username')
+        div
             label Password
             br
-            input(type='text' name='name_last')
-            br
+            input(type='text' name='password')
+        div
             label Email
             br
             input(type='text' name='email')
-            br
+        div
             label Age
             br
             input(type='text' name='age')
-            br
+        div
             label Which animal is the ugliest out of the following?
             br
             input(type='radio' name='animal' value='0' checked=animal=='Drop Bear')
@@ -32,7 +33,7 @@ block content
             br
             input(type='radio' name='animal' value='3' checked=animal=='Human')
             label Human
-            br
+        div
             label Which coding aspect is the most important?
             br
             input(type='radio' name='coding' value='0' checked=coding=='Types')
@@ -46,7 +47,7 @@ block content
             br
             input(type='radio' name='coding' value='3' checked=coding=='Readability')
             label Readability
-            br
+        div
             label Which person was the twentieth president of the United States of America?
             br
             input(type='radio' name='president' value='0' checked=authority=='Roosevelt')
@@ -60,5 +61,5 @@ block content
             br
             input(type='radio' name='president' value='3' checked=authority=='Hoover')
             label Herbert Hoover
-            br
+        div
             input(type='submit' value='Submit')

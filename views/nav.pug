@@ -1,7 +1,7 @@
 ul
     li
         a(href='/') Home
-    if !user
+    if !req.user
         li
             a(href='/register') Register
         li
@@ -9,7 +9,7 @@ ul
     else
         li
             a(href='/profile') Profile
-        if user.isAdmin
+        if req.user.isAdmin
             li
                 a(href='/users') Users
         li
