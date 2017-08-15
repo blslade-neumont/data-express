@@ -7,4 +7,4 @@ let mdb = mongoose.connection;
 mdb.on('error', console.error.bind(console, 'connection error:'));
 mdb.once('open', function (callback) { });
 
-export { mongoose };
+module.exports.mongoose = mongoose;

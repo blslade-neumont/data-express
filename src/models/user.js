@@ -9,4 +9,5 @@ var userSchema = mongoose.Schema({
     isAdmin: Boolean
 });
 
-export let User = mongoose.model('Users', userSchema);
+let User = mongoose.model('Users', userSchema);
+module.exports.User = User;
