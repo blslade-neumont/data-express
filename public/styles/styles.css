@@ -3,6 +3,40 @@
 * {
     box-sizing: border-box;
 }
+
+h1{
+    text-align: center;
+}
+
 body {
-    margin: 0;
+    background-color:  rgba(150, 150, 150, 1);
+    
+    width: 80%;
+    padding: 20px;
+    margin: 20px auto;
+}
+
+form {
+    background-color: rgba(200, 200, 200, 1);
+    padding: 20px;
+    margin: 20px auto;
+}
+
+ul {
+    list-style-type: none;
+}
+
+li {
+    display:inline;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+footer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 1rem;
+  text-align: center;
 }
