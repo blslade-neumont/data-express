@@ -59,7 +59,7 @@ app.post('/login', (req, res) => {
         res.status(422).send(`Invalid username or password`);
         return;
     }
-    User.find({ username: username }, (err, user) => {
+    User.findOne({ username: username }, (err, user) => {
         bcrypt.compare(password, user.passwordHash, (err, areSame) => {
             if (!areSame) {
                 res.status(401).send('Invalid');
