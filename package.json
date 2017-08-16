@@ -5,7 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "watch": "nodemon .",
-    "mongo-db": "mongod --dbpath \"./data\""
+    "mongo-db": "mongod --dbpath \"./data\"",
+    "create-admin": "node ./src/tasks/create-admin"
   },
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",

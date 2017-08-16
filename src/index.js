@@ -1,26 +1,21 @@
-var express = require('express'),
+let express = require('express'),
     pug = require('pug'),
     path = require('path'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
     bcrypt = require('bcrypt-nodejs'),
-    { User } = require('./models/user');
+    { User } = require('./models/user'),
+    { extractUserPolicy, isLoggedInPolicy, isAdminPolicy } = require('./policies');
 
-var app = express();
+let app = express();
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, '../views'));
 
 app.use(express.static(path.join(__dirname, '../public')));
 app.use(cookieParser('The answer to the question of life, the universe, and everything'));
-
-var urlencodedParser = bodyParser.urlencoded({ extended: true });
-app.use(urlencodedParser);
-
-app.use((req, res, next) => {
-    req.user = req.cookies.currentUser;
-    next();
-});
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(extractUserPolicy);
 
 app.get('/', (req, res) => {
     let cuser = req.user || 'Not logged in';
@@ -28,6 +23,10 @@ app.get('/', (req, res) => {
 });
 
 app.get('/register', (req, res) => {
+    if (req.user) {
+        res.redirect('/');
+        return;
+    }
     res.render('register', { req: req, title: 'Register' });
 });
 app.post('/register', (req, res) => {
@@ -51,6 +50,10 @@ app.post('/register', (req, res) => {
 });
 
 app.get('/login', (req, res) => {
+    if (req.user) {
+        res.redirect('/');
+        return;
+    }
     res.render('login', { req: req, title: 'Login' });
 });
 app.post('/login', (req, res) => {
@@ -79,15 +82,15 @@ app.get('/logout', (req, res) => {
     res.redirect('/');
 });
 
-app.get('/profile', (req, res) => {
+app.get('/profile', isLoggedInPolicy, (req, res) => {
     res.render('profile', { req: req, title: 'Profile' });
 });
 
-app.get('/edit-profile', (req, res) => {
+app.get('/edit-profile', isLoggedInPolicy, (req, res) => {
     res.render('edit-profile', { req: req, title: 'Edit Profile' });
 });
 
-app.get('/users', (req, res) => {
+app.get('/users', isAdminPolicy, (req, res) => {
     res.render('users', { req: req, title: 'Users' });
 });
 
