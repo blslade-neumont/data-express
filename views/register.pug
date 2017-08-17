@@ -20,29 +20,29 @@ block content
                 span Age
                 input(type='text' name='age')
         div(class='form-control')
-            label(for='animal')
+            label(for='q1')
                 span Ugliest Animal?
-                select(name='animal')
-                    option(value='0') Drop Bear
-                    option(value='1') Blobfish
-                    option(value='2') Hairless Cat
-                    option(value='3') Human
+                select(name='q1')
+                    option(value='0') #{utils.q1Response('0')}
+                    option(value='1') #{utils.q1Response('1')}
+                    option(value='2') #{utils.q1Response('2')}
+                    option(value='3') #{utils.q1Response('3')}
         div(class='form-control')
-            label(for='coding')
+            label(for='q2')
                 span Most important coding aspect?
-                select(name='coding')
-                    option(value='0') Types
-                    option(value='1') Inheritance
-                    option(value='2') Syntax
-                    option(value='3') Readability
+                select(name='q2')
+                    option(value='0') #{utils.q2Response('0')}
+                    option(value='1') #{utils.q2Response('1')}
+                    option(value='2') #{utils.q2Response('2')}
+                    option(value='3') #{utils.q2Response('3')}
         div(class='form-control')
-            label(for='president')
+            label(for='q3')
                 span 20th President?
-                select(name='president')
-                    option(value='0') Theodore Roosevelt
-                    option(value='1') James Garfield
-                    option(value='2') Millard Fillmore
-                    option(value='3') Herbert Hoover
+                select(name='q3')
+                    option(value='0') #{utils.q3Response('0')}
+                    option(value='1') #{utils.q3Response('1')}
+                    option(value='2') #{utils.q3Response('2')}
+                    option(value='3') #{utils.q3Response('3')}
         div(class='form-control submit-control')
             label(for='submit')
                 span &nbsp;

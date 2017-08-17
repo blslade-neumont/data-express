@@ -5,7 +5,8 @@ let express = require('express'),
     bodyParser = require('body-parser'),
     bcrypt = require('bcrypt-nodejs'),
     { User } = require('./models/user'),
-    { extractUserPolicy, isLoggedInPolicy, isAdminPolicy } = require('./policies');
+    { extractUserPolicy, isLoggedInPolicy, isAdminPolicy } = require('./policies')
+    utils = require('./utils');
 
 let app = express();
 
@@ -19,7 +20,7 @@ app.use(extractUserPolicy);
 
 app.get('/', (req, res) => {
     let cuser = req.user || 'Not logged in';
-    res.render('index', {req: req, title: 'Home', msg: JSON.stringify(cuser), stats: {
+    res.render('index', {req: req, utils: utils, title: 'Home', msg: JSON.stringify(cuser), stats: {
         q1: {a1: Math.random(),
              a2: Math.random(),
              a3: Math.random(),
@@ -40,19 +41,19 @@ app.get('/register', (req, res) => {
         res.redirect('/');
         return;
     }
-    res.render('register', { req: req, title: 'Register' });
+    res.render('register', { req: req, utils: utils, title: 'Register' });
 });
 app.post('/register', (req, res) => {
-    let { username, password, email, age, animal, coding, president } = req.body || {};
+    let { username, password, email, age, q1, q2, q3 } = req.body || {};
     if (!username || !password) {
         res.status(422).send(`Invalid username or password`);
         return;
     }
     email = email || '';
     age = +(age || '0');
-    let q1 = animal || '0';
-    let q2 = coding || '0';
-    let q3 = president || '0';
+    q1 = q1 || '0';
+    q2 = q2 || '0';
+    q3 = q3 || '0';
     bcrypt.hash(password, null, null, (err, hash) => {
         let user = new User({
             username: username,
@@ -61,7 +62,7 @@ app.post('/register', (req, res) => {
             email: email,
             age: age,
             q1: q1,
-            q1: q2,
+            q2: q2,
             q3: q3
         });
         user.save((err, user) => {
@@ -76,7 +77,7 @@ app.get('/login', (req, res) => {
         res.redirect('/');
         return;
     }
-    res.render('login', { req: req, title: 'Login' });
+    res.render('login', { req: req, utils: utils, title: 'Login' });
 });
 app.post('/login', (req, res) => {
     let { username, password } = req.body || {};
@@ -109,11 +110,21 @@ app.get('/logout', (req, res) => {
 });
 
 app.get('/profile', isLoggedInPolicy, (req, res) => {
-    res.render('profile', { req: req, title: 'Profile' });
+    res.render('profile', { req: req, utils: utils, title: 'Profile' });
 });
 
 app.get('/edit-profile', isLoggedInPolicy, (req, res) => {
-    res.render('edit-profile', { req: req, title: 'Edit Profile' });
+    res.render('edit-profile', { req: req, utils: utils, editingUser: req.user, title: 'Edit Profile' });
+});
+app.get('/edit-profile/:id', isLoggedInPolicy, (req, res) => {
+    let id = req.params['id'];
+    User.findOne({ _id: id }, (err, user) => {
+        if (err) {
+            res.status(422).send(err);
+            return;
+        }
+        res.render('edit-profile', { req: req, utils: utils, editingUser: user, title: 'Edit Profile' });
+    });
 });
 app.post('/edit-profile/:id', isLoggedInPolicy, (req, res) => {
     let cuser = req.user;
@@ -130,12 +141,12 @@ app.post('/edit-profile/:id', isLoggedInPolicy, (req, res) => {
     }
     
     function editProfile(editingUser) {
-        let { password, email, age, animal, coding, president } = req.body || {};
+        let { password, email, age, q1, q2, q3 } = req.body || {};
         email = email || '';
         age = +(age || '0') || editingUser.age;
-        let q1 = animal || editingUser.q1;
-        let q2 = coding || editingUser.q2;
-        let q3 = president || editingUser.q3;
+        q1 = q1 || editingUser.q1;
+        q2 = q2 || editingUser.q2;
+        q3 = q3 || editingUser.q3;
         
         let user = new User({
             username: editingUser.username,
@@ -144,7 +155,7 @@ app.post('/edit-profile/:id', isLoggedInPolicy, (req, res) => {
             email: email,
             age: age,
             q1: q1,
-            q1: q2,
+            q2: q2,
             q3: q3
         });
         
@@ -171,7 +182,7 @@ app.post('/edit-profile/:id', isLoggedInPolicy, (req, res) => {
 });
 
 app.get('/users', isAdminPolicy, (req, res) => {
-    res.render('users', { req: req, title: 'Users' });
+    res.render('users', { req: req, utils: utils, title: 'Users' });
 });
 
 // app.get('/create', route.create);
