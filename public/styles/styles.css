@@ -16,10 +16,13 @@ body {
     margin: 20px auto;
 }
 
-form {
+form.page-form {
     background-color: rgba(200, 200, 200, 1);
     padding: 20px;
     margin: 20px auto;
+}
+form.form-inline {
+    display: inline;
 }
 
 ul {

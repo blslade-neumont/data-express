@@ -2,26 +2,12 @@ let bcrypt = require('bcrypt-nodejs'),
     { User } = require('../models/user');
 
 (() => {
-    User.findOne({ username: 'admin' }, (err, user) => {
-        if (user) {
-            if (!user.isAdmin) {
-                user.isAdmin = true;
-                user.email = '';
-                user.age = 0;
-                user.q1 = '0';
-                user.q2 = '0';
-                user.a3 = '0';
-                user.save(() => {
-                    console.log('The admin account has been updated.');
-                    process.exit(0);
-                });
-                return;
-            }
-            console.error('The admin account already exists.');
-            process.exit(0);
+    User.remove({ username: 'admin' }, (err) => {
+        if (err) {
+            console.error(err);
+            console.error('Failed to remove old user');
             return;
         }
-        
         bcrypt.hash('pass', null, null, (err, hash) => {
             let user = new User({
                 username: 'admin',
@@ -31,7 +17,7 @@ let bcrypt = require('bcrypt-nodejs'),
                 age: 0,
                 q1: '0',
                 q2: '0',
-                a3: '0'
+                q3: '0'
             });
             user.save((err, user) => {
                 if (err) {
@@ -45,5 +31,5 @@ let bcrypt = require('bcrypt-nodejs'),
                 }
             });
         });
-    })
+    });
 })();

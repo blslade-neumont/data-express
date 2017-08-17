@@ -1,4 +1,26 @@
 extends layout
 
 block content
-    p Goodbye, World! (Users)
+    h1 Users
+    table
+        thead
+            th Username
+            th Email
+            th Age
+            th Ugliest animal
+            th Most important coding aspect
+            th 20th President
+            th &nbsp;
+        each user in users
+            tr
+                td=user.username
+                td=user.email
+                td=user.age
+                td=utils.q1Response(user.q1)
+                td=utils.q2Response(user.q2)
+                td=utils.q3Response(user.q3)
+                td
+                    form(action='/edit-profile/' + user._id, method="get", class='form-inline')
+                        input(type='submit', value='Edit', name='submit')
+                    form(action='/delete-user/' + user._id, method="post", class='form-inline')
+                        input(type='submit', value='Delete', name='submit')

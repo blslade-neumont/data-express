@@ -2,23 +2,23 @@ extends layout
 
 block content
     h1 Register
-    form(id='form' method='post' action='/register')
+    form(id='form', method='post', action='/register', class='page-form')
         div(class='form-control')
             label(for='username')
                 span Username
-                input(type='text' name='username')
+                input(type='text', name='username')
         div(class='form-control')
             label(for='password')
                 span Password
-                input(type='password' name='password')
+                input(type='password', name='password')
         div(class='form-control')
             label(for='email')
                 span Email
-                input(type='text' name='email')
+                input(type='text', name='email')
         div(class='form-control')
             label(for='age')
                 span Age
-                input(type='text' name='age')
+                input(type='text', name='age')
         div(class='form-control')
             label(for='q1')
                 span Ugliest Animal?

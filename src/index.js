@@ -97,7 +97,7 @@ app.post('/login', (req, res) => {
             }
             else {
                 res.cookie('currentUser', JSON.stringify(user));
-                res.redirect('/edit-profile');
+                res.redirect('/profile');
                 return;
             }
         });
@@ -147,20 +147,18 @@ app.post('/edit-profile/:id', isLoggedInPolicy, (req, res) => {
         q1 = q1 || editingUser.q1;
         q2 = q2 || editingUser.q2;
         q3 = q3 || editingUser.q3;
-        
-        let user = new User({
-            username: editingUser.username,
-            passwordHash: editingUser.passwordHash,
-            isAdmin: editingUser.isAdmin,
-            email: email,
-            age: age,
-            q1: q1,
-            q2: q2,
-            q3: q3
-        });
+        let changeHash = editingUser.passwordHash;
         
         function saveUser() {
-            user.save((err, user) => {
+            console.log(changeHash);
+            User.findByIdAndUpdate(editingUser._id, { $set: {
+                passwordHash: changeHash,
+                email: email,
+                age: age,
+                q1: q1,
+                q2: q2,
+                q3: q3
+            } }, { new: true }, (err, user) => {
                 res.cookie('currentUser', JSON.stringify(user));
                 if (cuser._id === editingUser._id) {
                     res.redirect('/profile');
@@ -171,9 +169,9 @@ app.post('/edit-profile/:id', isLoggedInPolicy, (req, res) => {
             });
         }
         
-        if (!password) {
+        if (password) {
             bcrypt.hash(password, null, null, (err, hash) => {
-                user.passwordHash = hash;
+                changeHash = hash;
                 saveUser();
             });
         }
@@ -182,7 +180,28 @@ app.post('/edit-profile/:id', isLoggedInPolicy, (req, res) => {
 });
 
 app.get('/users', isAdminPolicy, (req, res) => {
-    res.render('users', { req: req, utils: utils, title: 'Users' });
+    User.find({}, (err, users) => {
+        if (err) {
+            res.status(500).send(err);
+            return;
+        }
+        res.render('users', { req: req, utils: utils, users: users, title: 'Users' });
+    });
+});
+app.post('/delete-user/:id', isAdminPolicy, (req, res) => {
+    let cuser = req.user;
+    let editId = req.params['id'];
+    if (!editId || editId === cuser._id || editId === 'currentUser') {
+        res.status(422).send(`You can't delete the currently logged-in user`);
+        return;
+    }
+    User.remove({ _id: editId }, (err) => {
+        if (err) {
+            res.status(500).send(err);
+            return;
+        }
+        res.redirect('/users');
+    });
 });
 
 // app.get('/create', route.create);

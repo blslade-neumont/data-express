@@ -2,7 +2,7 @@ extends layout
 
 block content
     h1 Edit Profile
-    form(id='form' method='post' action='/edit-profile/' + editingUser._id)
+    form(id='form', method='post', action='/edit-profile/' + editingUser._id, class='page-form')
         div(class='form-control')
             label(for='password')
                 span Password
