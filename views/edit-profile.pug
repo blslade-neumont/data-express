@@ -2,27 +2,23 @@ extends layout
 
 block content
     h1 Edit Profile
-    form(id='form' method='post' action='/register')
-        div(class='form-control')
-            label(for='username')
-                span Username
-                input(type='text' name='username')
+    form(id='form' method='post' action='/edit-profile/' + req.user._id)
         div(class='form-control')
             label(for='password')
                 span Password
-                input(type='password' name='password')
+                input(type='password', name='password')
         div(class='form-control')
             label(for='email')
                 span Email
-                input(type='text' name='email')
+                input(type='text', name='email', value=req.user.email)
         div(class='form-control')
             label(for='age')
                 span Age
-                input(type='text' name='age')
+                input(type='text', name='age', value=req.user.age)
         div(class='form-control')
             label(for='animal')
                 span Ugliest Animal?
-                select(name='animal')
+                select(name='animal', value=req.user.q1)
                     option(value='0') Drop Bear
                     option(value='1') Blobfish
                     option(value='2') Hairless Cat
@@ -30,7 +26,7 @@ block content
         div(class='form-control')
             label(for='coding')
                 span Most important coding aspect?
-                select(name='coding')
+                select(name='coding', value=req.user.q2)
                     option(value='0') Types
                     option(value='1') Inheritance
                     option(value='2') Syntax
@@ -38,7 +34,7 @@ block content
         div(class='form-control')
             label(for='president')
                 span 20th President?
-                select(name='president')
+                select(name='president', value=req.user.q3)
                     option(value='0') Theodore Roosevelt
                     option(value='1') James Garfield
                     option(value='2') Millard Fillmore

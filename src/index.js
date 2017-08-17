@@ -19,7 +19,7 @@ app.use(extractUserPolicy);
 
 app.get('/', (req, res) => {
     let cuser = req.user || 'Not logged in';
-    res.render('index', {req: req, title: 'Home', msg: cuser, stats: {
+    res.render('index', {req: req, title: 'Home', msg: JSON.stringify(cuser), stats: {
         q1: {a1: Math.random(),
              a2: Math.random(),
              a3: Math.random(),
@@ -43,17 +43,26 @@ app.get('/register', (req, res) => {
     res.render('register', { req: req, title: 'Register' });
 });
 app.post('/register', (req, res) => {
-    let { username, password } = req.body || {};
+    let { username, password, email, age, animal, coding, president } = req.body || {};
     if (!username || !password) {
         res.status(422).send(`Invalid username or password`);
         return;
     }
-    //email, age, animal, coding, president
+    email = email || '';
+    age = +(age || '0');
+    let q1 = animal || '0';
+    let q2 = coding || '0';
+    let q3 = president || '0';
     bcrypt.hash(password, null, null, (err, hash) => {
         let user = new User({
             username: username,
             passwordHash: hash,
-            isAdmin: false
+            isAdmin: false,
+            email: email,
+            age: age,
+            q1: q1,
+            q1: q2,
+            q3: q3
         });
         user.save((err, user) => {
             res.cookie('currentUser', JSON.stringify(user));
@@ -105,6 +114,60 @@ app.get('/profile', isLoggedInPolicy, (req, res) => {
 
 app.get('/edit-profile', isLoggedInPolicy, (req, res) => {
     res.render('edit-profile', { req: req, title: 'Edit Profile' });
+});
+app.post('/edit-profile/:id', isLoggedInPolicy, (req, res) => {
+    let cuser = req.user;
+    let editId = req.params['id'];
+    if (!editId || editId === cuser._id || editId === 'currentUser') editProfile(cuser);
+    else {
+        User.findOne({ _id: editId }, (err, user) => {
+            if (err) {
+                res.status(422).send(err);
+                return;
+            }
+            editProfile(user);
+        });
+    }
+    
+    function editProfile(editingUser) {
+        let { password, email, age, animal, coding, president } = req.body || {};
+        email = email || '';
+        age = +(age || '0') || editingUser.age;
+        let q1 = animal || editingUser.q1;
+        let q2 = coding || editingUser.q2;
+        let q3 = president || editingUser.q3;
+        
+        let user = new User({
+            username: editingUser.username,
+            passwordHash: editingUser.passwordHash,
+            isAdmin: editingUser.isAdmin,
+            email: email,
+            age: age,
+            q1: q1,
+            q1: q2,
+            q3: q3
+        });
+        
+        function saveUser() {
+            user.save((err, user) => {
+                res.cookie('currentUser', JSON.stringify(user));
+                if (cuser._id === editingUser._id) {
+                    res.redirect('/profile');
+                }
+                else {
+                    res.redirect('/users');
+                }
+            });
+        }
+        
+        if (!password) {
+            bcrypt.hash(password, null, null, (err, hash) => {
+                user.passwordHash = hash;
+                saveUser();
+            });
+        }
+        else saveUser();
+    }
 });
 
 app.get('/users', isAdminPolicy, (req, res) => {
