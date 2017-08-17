@@ -1,4 +1,49 @@
 extends layout
 
 block content
-    p Goodbye, World! (Edit profile)
+    h1 Edit Profile
+    form(id='form' method='post' action='/register')
+        div(class='form-control')
+            label(for='username')
+                span Username
+                input(type='text' name='username')
+        div(class='form-control')
+            label(for='password')
+                span Password
+                input(type='password' name='password')
+        div(class='form-control')
+            label(for='email')
+                span Email
+                input(type='text' name='email')
+        div(class='form-control')
+            label(for='age')
+                span Age
+                input(type='text' name='age')
+        div(class='form-control')
+            label(for='animal')
+                span Ugliest Animal?
+                select(name='animal')
+                    option(value='0') Drop Bear
+                    option(value='1') Blobfish
+                    option(value='2') Hairless Cat
+                    option(value='3') Human
+        div(class='form-control')
+            label(for='coding')
+                span Most important coding aspect?
+                select(name='coding')
+                    option(value='0') Types
+                    option(value='1') Inheritance
+                    option(value='2') Syntax
+                    option(value='3') Readability
+        div(class='form-control')
+            label(for='president')
+                span 20th President?
+                select(name='president')
+                    option(value='0') Theodore Roosevelt
+                    option(value='1') James Garfield
+                    option(value='2') Millard Fillmore
+                    option(value='3') Herbert Hoover
+        div(class='form-control')
+            label(for='submit')
+                span &nbsp;
+                input(type='submit', value='Save', name='submit')

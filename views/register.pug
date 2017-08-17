@@ -3,63 +3,47 @@ extends layout
 block content
     h1 Register
     form(id='form' method='post' action='/register')
-        div
-            label Username
-            br
-            input(type='text' name='username')
-        div
-            label Password
-            br
-            input(type='text' name='password')
-        div
-            label Email
-            br
-            input(type='text' name='email')
-        div
-            label Age
-            br
-            input(type='text' name='age')
-        div
-            label Which animal is the ugliest out of the following?
-            br
-            input(type='radio' name='animal' value='0' checked=animal=='Drop Bear')
-            label Drop Bear
-            br
-            input(type='radio' name='animal' value='1' checked=animal=='Blobfish')
-            label Blobfish
-            br
-            input(type='radio' name='animal' value='2' checked=animal=='Hairless Cat')
-            label Hairless Cat
-            br
-            input(type='radio' name='animal' value='3' checked=animal=='Human')
-            label Human
-        div
-            label Which coding aspect is the most important?
-            br
-            input(type='radio' name='coding' value='0' checked=coding=='Types')
-            label Types
-            br
-            input(type='radio' name='coding' value='1' checked=coding=='Inheritance')
-            label Inheritance
-            br
-            input(type='radio' name='coding' value='2' checked=coding=='Syntax')
-            label Syntax
-            br
-            input(type='radio' name='coding' value='3' checked=coding=='Readability')
-            label Readability
-        div
-            label Which person was the twentieth president of the United States of America?
-            br
-            input(type='radio' name='president' value='0' checked=authority=='Roosevelt')
-            label Theodore Roosevelt
-            br
-            input(type='radio' name='president' value='1' checked=authority=='Garfield')
-            label James Garfield
-            br
-            input(type='radio' name='president' value='2' checked=authority=='Fillmore')
-            label Millard Fillmore
-            br
-            input(type='radio' name='president' value='3' checked=authority=='Hoover')
-            label Herbert Hoover
-        div
-            input(type='submit' value='Submit')
+        div(class='form-control')
+            label(for='username')
+                span Username
+                input(type='text' name='username')
+        div(class='form-control')
+            label(for='password')
+                span Password
+                input(type='password' name='password')
+        div(class='form-control')
+            label(for='email')
+                span Email
+                input(type='text' name='email')
+        div(class='form-control')
+            label(for='age')
+                span Age
+                input(type='text' name='age')
+        div(class='form-control')
+            label(for='animal')
+                span Ugliest Animal?
+                select(name='animal')
+                    option(value='0') Drop Bear
+                    option(value='1') Blobfish
+                    option(value='2') Hairless Cat
+                    option(value='3') Human
+        div(class='form-control')
+            label(for='coding')
+                span Most important coding aspect?
+                select(name='coding')
+                    option(value='0') Types
+                    option(value='1') Inheritance
+                    option(value='2') Syntax
+                    option(value='3') Readability
+        div(class='form-control')
+            label(for='president')
+                span 20th President?
+                select(name='president')
+                    option(value='0') Theodore Roosevelt
+                    option(value='1') James Garfield
+                    option(value='2') Millard Fillmore
+                    option(value='3') Herbert Hoover
+        div(class='form-control submit-control')
+            label(for='submit')
+                span &nbsp;
+                input(type='submit', value='Register', name='submit')

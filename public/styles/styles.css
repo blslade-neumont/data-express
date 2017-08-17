@@ -40,3 +40,21 @@ footer {
   padding: 1rem;
   text-align: center;
 }
+
+.form-control {
+    padding: 8px 16px;
+}
+.submit-control input[type=submit] {
+    margin-top: 20px;
+    padding: 16px 32px;
+}
+.form-control span {
+    display: block;
+    text-align: right;
+    width: 30%;
+    float: left;
+    padding-right: 16px;
+}
+.form-control input, .form-control select {
+    padding: 4px 8px;
+}
