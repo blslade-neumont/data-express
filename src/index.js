@@ -19,7 +19,11 @@ app.use(extractUserPolicy);
 
 app.get('/', (req, res) => {
     let cuser = req.user || 'Not logged in';
-    res.render('index', {req: req, title: 'Home', msg: cuser});
+    res.render('index', {req: req, title: 'Home', msg: cuser, stats: {
+        q1: 0.33,
+        q2: 0.5,
+        q3: 0.6
+    }});
 });
 
 app.get('/register', (req, res) => {
@@ -63,6 +67,10 @@ app.post('/login', (req, res) => {
         return;
     }
     User.findOne({ username: username }, (err, user) => {
+        if (!user){
+            res.status(401).send('Invalid');
+            return;
+        }
         bcrypt.compare(password, user.passwordHash, (err, areSame) => {
             if (!areSame) {
                 res.status(401).send('Invalid');

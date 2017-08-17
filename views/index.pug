@@ -4,3 +4,9 @@ block content
     h1 Goodbye, World! (Home)
     if msg
         p=msg
+        canvas(id='myCanvas')
+        script.
+            Q1Stat=#{stats.q1};
+            Q2Stat=#{stats.q2};
+            Q3Stat=#{stats.q3};
+        script(src="scripts/charts.js")
