@@ -20,9 +20,18 @@ app.use(extractUserPolicy);
 app.get('/', (req, res) => {
     let cuser = req.user || 'Not logged in';
     res.render('index', {req: req, title: 'Home', msg: cuser, stats: {
-        q1: 0.33,
-        q2: 0.5,
-        q3: 0.6
+        q1: {a1: Math.random(),
+             a2: Math.random(),
+             a3: Math.random(),
+             a4: Math.random()},
+        q2: {a1: Math.random(),
+             a2: Math.random(),
+             a3: Math.random(),
+             a4: Math.random()},
+        q3: {a1: Math.random(),
+             a2: Math.random(),
+             a3: Math.random(),
+             a4: Math.random()}
     }});
 });
 

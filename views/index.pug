@@ -4,9 +4,11 @@ block content
     h1 Goodbye, World! (Home)
     if msg
         p=msg
-        canvas(id='myCanvas')
+        canvas(id='q1Canvas')
+        canvas(id='q2Canvas')
+        canvas(id='q3Canvas')
         script.
-            Q1Stat=#{stats.q1};
-            Q2Stat=#{stats.q2};
-            Q3Stat=#{stats.q3};
+            Q1Stats=[#{stats.q1.a1}, #{stats.q1.a2}, #{stats.q1.a3}, #{stats.q1.a4}];
+            Q2Stats=[#{stats.q2.a1}, #{stats.q2.a2}, #{stats.q2.a3}, #{stats.q2.a4}];
+            Q3Stats=[#{stats.q3.a1}, #{stats.q3.a2}, #{stats.q3.a3}, #{stats.q3.a4}];
         script(src="scripts/charts.js")
