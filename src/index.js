@@ -18,22 +18,36 @@ app.use(cookieParser('The answer to the question of life, the universe, and ever
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(extractUserPolicy);
 
+function countAns(data, ans, question){
+    let count = 0;
+    for (let i = 0; i < data.length; ++i) {
+        if (data[i][question] === ans) { 
+            ++count; 
+        }
+    }
+
+    return count;
+}
+
 app.get('/', (req, res) => {
     let cuser = req.user || 'Not logged in';
-    res.render('index', {req: req, utils: utils, title: 'Home', msg: JSON.stringify(cuser), stats: {
-        q1: {a1: Math.random(),
-             a2: Math.random(),
-             a3: Math.random(),
-             a4: Math.random()},
-        q2: {a1: Math.random(),
-             a2: Math.random(),
-             a3: Math.random(),
-             a4: Math.random()},
-        q3: {a1: Math.random(),
-             a2: Math.random(),
-             a3: Math.random(),
-             a4: Math.random()}
-    }});
+
+    User.find().exec((err, data) => {
+         res.render('index', {req: req, utils: utils, title: 'Home', msg: JSON.stringify(cuser), stats: {
+            q1: {a1: (countAns(data, '0', 'q1') / data.length),
+                 a2: (countAns(data, '1', 'q1') / data.length),
+                 a3: (countAns(data, '2', 'q1') / data.length),
+                 a4: (countAns(data, '3', 'q1') / data.length)},
+            q2: {a1: (countAns(data, '0', 'q2') / data.length), 
+                 a2: (countAns(data, '1', 'q2') / data.length),
+                 a3: (countAns(data, '2', 'q2') / data.length),
+                 a4: (countAns(data, '3', 'q2') / data.length)},
+            q3: {a1: (countAns(data, '0', 'q3') / data.length),
+                 a2: (countAns(data, '1', 'q3') / data.length),
+                 a3: (countAns(data, '2', 'q3') / data.length),
+                 a4: (countAns(data, '3', 'q3') / data.length)}
+        }});
+    });
 });
 
 app.get('/register', (req, res) => {
@@ -150,7 +164,7 @@ app.post('/edit-profile/:id', isLoggedInPolicy, (req, res) => {
         let changeHash = editingUser.passwordHash;
         
         function saveUser() {
-            console.log(changeHash);
+            // console.log(changeHash);
             User.findByIdAndUpdate(editingUser._id, { $set: {
                 passwordHash: changeHash,
                 email: email,
