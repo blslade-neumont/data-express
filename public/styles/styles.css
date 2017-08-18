@@ -6,17 +6,6 @@ html {
     height: 100%;
 }
 
-h1{
-    text-align: center;
-    background-color: rgba(92, 131, 47, 1);
-}
-
-p {
-    background-color: rgba(216, 202, 168, 1);
-    padding: 20px;
-    margin: 20px auto;
-}
-
 body {
     background-color:  rgba(54, 57, 66, 1);
     width: 90%;
@@ -24,10 +13,28 @@ body {
     margin: 20px auto;
 }
 
-form {
+div.container {
     background-color: rgba(216, 202, 168, 1);
     padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    /* background-color: rgba(92, 131, 47, 1); */
+}
+
+p {
+    /* padding: 20px; */
+    margin: 20px 0;
+}
+
+form.page-form {
+    /* background-color: rgba(200, 200, 200, 1); */
+    padding: 20px;
     margin: 20px auto;
+}
+form.form-inline {
+    display: inline;
 }
 
 ul {
@@ -41,7 +48,6 @@ li {
 }
 
 footer {
-    background-color: rgba(216, 202, 168, 1);
     text-align: center;
     right: 0;
     bottom: 0;
@@ -70,4 +76,11 @@ footer {
 canvas {
     margin:1.5%;
     width: 30%;
+}
+
+table {
+    width: 100%;
+}
+tr {
+    text-align: left;
 }
