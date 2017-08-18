@@ -65,7 +65,8 @@ function drawBackground(color){
 function drawBar(xPosCenter, percent, color, name){
     var h = percent * FULL_BAR_HEIGHT;
     drawRect(xPosCenter - BAR_WIDTH / 2, CANVAS_HEIGHT - h, BAR_WIDTH, h, color);
-    drawText(name, xPosCenter, CANVAS_HEIGHT - h - OFFSET, BLACK, "center", "center", "15px Verdana");
+    drawText(name, xPosCenter, CANVAS_HEIGHT - h - OFFSET - 5, BLACK, "center", "center", "15px Verdana");
+    drawText(Math.floor(percent*100) + "%", xPosCenter, CANVAS_HEIGHT - 10, BLACK, "center", "center", "15px Verdana");
 }
 
 // draws the chart
@@ -77,24 +78,19 @@ function drawChart(bgColor, title, bars){
     }
 }
 
-// maths for testing
-function fmod(a, b) {
-    return +(a - (Math.floor(a / b) * b)).toPrecision(8);
-}
-
 (function(){
-    var q1a1 = fmod(window.Q1Stats[0], 1.0);
-    var q1a2 = fmod(window.Q1Stats[1], 1.0);
-    var q1a3 = fmod(window.Q1Stats[2], 1.0);
-    var q1a4 = fmod(window.Q1Stats[3], 1.0);
-    var q2a1 = fmod(window.Q2Stats[0], 1.0);
-    var q2a2 = fmod(window.Q2Stats[1], 1.0);
-    var q2a3 = fmod(window.Q2Stats[2], 1.0);
-    var q2a4 = fmod(window.Q2Stats[3], 1.0);
-    var q3a1 = fmod(window.Q3Stats[0], 1.0);
-    var q3a2 = fmod(window.Q3Stats[1], 1.0);
-    var q3a3 = fmod(window.Q3Stats[2], 1.0);
-    var q3a4 = fmod(window.Q3Stats[3], 1.0);
+    var q1a1 = window.Q1Stats[0];
+    var q1a2 = window.Q1Stats[1];
+    var q1a3 = window.Q1Stats[2];
+    var q1a4 = window.Q1Stats[3];
+    var q2a1 = window.Q2Stats[0];
+    var q2a2 = window.Q2Stats[1];
+    var q2a3 = window.Q2Stats[2];
+    var q2a4 = window.Q2Stats[3];
+    var q3a1 = window.Q3Stats[0];
+    var q3a2 = window.Q3Stats[1];
+    var q3a3 = window.Q3Stats[2];
+    var q3a4 = window.Q3Stats[3];
 
     currentContext = ctx1;
     sizeCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);

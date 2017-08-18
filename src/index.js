@@ -31,7 +31,8 @@ function countAns(data, ans, question){
 
 app.get('/', (req, res) => {
     User.find().exec((err, data) => {
-         res.render('index', {req: req, utils: utils, title: 'Home', stats: {
+
+        res.render('index', {req: req, utils: utils, title: 'Home', stats: {
             q1: {a1: (countAns(data, '0', 'q1') / data.length),
                  a2: (countAns(data, '1', 'q1') / data.length),
                  a3: (countAns(data, '2', 'q1') / data.length),
@@ -147,11 +148,7 @@ app.post('/edit-profile/:id', isLoggedInPolicy, (req, res) => {
     let cuser = req.user;
     let editId = req.params['id'];
     let isMe = false;
-    console.log(`editId: ${editId}`);
-    console.log(`cuser._id: ${cuser._id}`);
-    console.log(typeof cuser._id);
     if (!editId || cuser._id.equals(editId) || editId === 'currentUser') {
-        console.log(`WTF: What a Terrible Failure`);
         isMe = true;
         editProfile(cuser);
     }
