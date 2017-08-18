@@ -65,6 +65,10 @@ app.post('/register', (req, res) => {
     }
     email = email || '';
     age = +(age || '0');
+    if (`${age}` !== req.body.age) {
+        res.status(422).render('error', {req: req, utils: utils, title: 'Error', msg: `Invalid age: ${req.body.age}`});
+        return;
+    }
     q1 = q1 || '0';
     q2 = q2 || '0';
     q3 = q3 || '0';
@@ -160,6 +164,10 @@ app.post('/edit-profile/:id', isLoggedInPolicy, (req, res) => {
         let { password, email, age, q1, q2, q3 } = req.body || {};
         email = email || '';
         age = +(age || '0') || editingUser.age;
+        if (`${age}` !== req.body.age && req.body.age) {
+            res.status(422).render('error', {req: req, utils: utils, title: 'Error', msg: `Invalid age: ${req.body.age}`});
+            return;
+        }
         q1 = q1 || editingUser.q1;
         q2 = q2 || editingUser.q2;
         q3 = q3 || editingUser.q3;
