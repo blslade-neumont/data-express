@@ -31,8 +31,15 @@ function countAns(data, ans, question){
 
 app.get('/', (req, res) => {
     User.find().exec((err, data) => {
+        let message = "Hello! Welcome first-time-user!";
 
-        res.render('index', {req: req, utils: utils, title: 'Home', stats: {
+        if (req.cookies.visited){
+            message = "Welcome back! Last visited: " + req.cookies.visited;
+        }
+
+        res.cookie('visited', (new Date().toUTCString()));
+
+        res.render('index', {req: req, utils: utils, title: 'Home', msg: message, stats: {
             q1: {a1: (countAns(data, '0', 'q1') / data.length),
                  a2: (countAns(data, '1', 'q1') / data.length),
                  a3: (countAns(data, '2', 'q1') / data.length),
@@ -46,7 +53,9 @@ app.get('/', (req, res) => {
                  a3: (countAns(data, '2', 'q3') / data.length),
                  a4: (countAns(data, '3', 'q3') / data.length)}
         }});
+        
     });
+
 });
 
 app.get('/register', (req, res) => {
