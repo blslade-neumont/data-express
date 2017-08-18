@@ -60,7 +60,7 @@ app.get('/register', (req, res) => {
 app.post('/register', (req, res) => {
     let { username, password, email, age, q1, q2, q3 } = req.body || {};
     if (!username || !password) {
-        res.status(422).send(`Invalid username or password`);
+        res.status(422).render('error', {req: req, utils: utils, title: 'Error', msg: 'Invalid username or password'});
         return;
     }
     email = email || '';
@@ -81,7 +81,7 @@ app.post('/register', (req, res) => {
         });
         user.save((err, user) => {
             res.cookie('currentUser', JSON.stringify(user));
-            res.redirect('/edit-profile');
+            res.redirect('/profile');
         });
     });
 });
@@ -96,17 +96,17 @@ app.get('/login', (req, res) => {
 app.post('/login', (req, res) => {
     let { username, password } = req.body || {};
     if (!username || !password) {
-        res.status(422).send(`Invalid username or password`);
+        res.status(422).render('error', {req: req, utils: utils, title: 'Error', msg: `Invalid username or password`});
         return;
     }
     User.findOne({ username: username }, (err, user) => {
-        if (!user){
-            res.status(401).send('Invalid');
+        if (!user) {
+            res.status(422).render('error', {req: req, utils: utils, title: 'Error', msg: 'Invalid username or password'});
             return;
         }
         bcrypt.compare(password, user.passwordHash, (err, areSame) => {
             if (!areSame) {
-                res.status(401).send('Invalid');
+                res.status(422).render('error', {req: req, utils: utils, title: 'Error', msg: 'Invalid username or password'});
                 return;
             }
             else {
@@ -134,7 +134,8 @@ app.get('/edit-profile/:id', isLoggedInPolicy, (req, res) => {
     let id = req.params['id'];
     User.findOne({ _id: id }, (err, user) => {
         if (err) {
-            res.status(422).send(err);
+            res.status(422).render('error', {req: req, utils: utils, title: 'Error', msg: `Could not find user with id ${id}`});
+            console.error(err);
             return;
         }
         res.render('edit-profile', { req: req, utils: utils, editingUser: user, title: 'Edit Profile' });
@@ -147,7 +148,8 @@ app.post('/edit-profile/:id', isLoggedInPolicy, (req, res) => {
     else {
         User.findOne({ _id: editId }, (err, user) => {
             if (err) {
-                res.status(422).send(err);
+                res.status(422).render('error', {req: req, utils: utils, title: 'Error', msg: `Could not find user with id ${id}`});
+                console.error(err);
                 return;
             }
             editProfile(user);
@@ -196,7 +198,8 @@ app.post('/edit-profile/:id', isLoggedInPolicy, (req, res) => {
 app.get('/users', isAdminPolicy, (req, res) => {
     User.find({}, (err, users) => {
         if (err) {
-            res.status(500).send(err);
+            res.status(500).render('error', {req: req, utils: utils, title: 'Error', msg: `Could not find users`});
+            console.error(err);
             return;
         }
         res.render('users', { req: req, utils: utils, users: users, title: 'Users' });
@@ -206,12 +209,13 @@ app.post('/delete-user/:id', isAdminPolicy, (req, res) => {
     let cuser = req.user;
     let editId = req.params['id'];
     if (!editId || editId === cuser._id || editId === 'currentUser') {
-        res.status(422).send(`You can't delete the currently logged-in user`);
+        res.status(422).render('error', {req: req, utils: utils, title: 'Error', msg: `You can't delete the currently logged-in user`});
         return;
     }
     User.remove({ _id: editId }, (err) => {
         if (err) {
-            res.status(500).send(err);
+            res.status(500).render('error', {req: req, utils: utils, title: 'Error', msg: `Failed to delete user with id ${editId}`});
+            console.error(err);
             return;
         }
         res.redirect('/users');
