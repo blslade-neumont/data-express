@@ -180,8 +180,8 @@ app.post('/edit-profile/:id', isLoggedInPolicy, (req, res) => {
                 q2: q2,
                 q3: q3
             } }, { new: true }, (err, user) => {
-                res.cookie('currentUser', JSON.stringify(user));
                 if (cuser._id === editingUser._id) {
+                    res.cookie('currentUser', JSON.stringify(user));
                     res.redirect('/profile');
                 }
                 else {
