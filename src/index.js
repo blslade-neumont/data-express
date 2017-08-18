@@ -146,7 +146,15 @@ app.get('/edit-profile/:id', isLoggedInPolicy, (req, res) => {
 app.post('/edit-profile/:id', isLoggedInPolicy, (req, res) => {
     let cuser = req.user;
     let editId = req.params['id'];
-    if (!editId || editId === cuser._id || editId === 'currentUser') editProfile(cuser);
+    let isMe = false;
+    console.log(`editId: ${editId}`);
+    console.log(`cuser._id: ${cuser._id}`);
+    console.log(typeof cuser._id);
+    if (!editId || cuser._id.equals(editId) || editId === 'currentUser') {
+        console.log(`WTF: What a Terrible Failure`);
+        isMe = true;
+        editProfile(cuser);
+    }
     else {
         User.findOne({ _id: editId }, (err, user) => {
             if (err) {
@@ -180,7 +188,7 @@ app.post('/edit-profile/:id', isLoggedInPolicy, (req, res) => {
                 q2: q2,
                 q3: q3
             } }, { new: true }, (err, user) => {
-                if (cuser._id === editingUser._id) {
+                if (isMe) {
                     res.cookie('currentUser', JSON.stringify(user));
                     res.redirect('/profile');
                 }
@@ -213,7 +221,7 @@ app.get('/users', isAdminPolicy, (req, res) => {
 app.post('/delete-user/:id', isAdminPolicy, (req, res) => {
     let cuser = req.user;
     let editId = req.params['id'];
-    if (!editId || editId === cuser._id || editId === 'currentUser') {
+    if (!editId || cuser._id.equals(editId) || editId === 'currentUser') {
         res.status(422).render('error', {req: req, utils: utils, title: 'Error', msg: `You can't delete the currently logged-in user`});
         return;
     }
