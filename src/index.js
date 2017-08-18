@@ -30,10 +30,8 @@ function countAns(data, ans, question){
 }
 
 app.get('/', (req, res) => {
-    let cuser = req.user || 'Not logged in';
-
     User.find().exec((err, data) => {
-         res.render('index', {req: req, utils: utils, title: 'Home', msg: JSON.stringify(cuser), stats: {
+         res.render('index', {req: req, utils: utils, title: 'Home', stats: {
             q1: {a1: (countAns(data, '0', 'q1') / data.length),
                  a2: (countAns(data, '1', 'q1') / data.length),
                  a3: (countAns(data, '2', 'q1') / data.length),
@@ -174,7 +172,6 @@ app.post('/edit-profile/:id', isLoggedInPolicy, (req, res) => {
         let changeHash = editingUser.passwordHash;
         
         function saveUser() {
-            // console.log(changeHash);
             User.findByIdAndUpdate(editingUser._id, { $set: {
                 passwordHash: changeHash,
                 email: email,
