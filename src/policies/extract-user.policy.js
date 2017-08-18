@@ -1,13 +1,32 @@
-
+let { User } = require('../models/user');
+let { utils } = require('../utils');
 
 module.exports.extractUserPolicy = (req, res, next) => {
-    req.user = req.cookies.currentUser || null;
+    let user = req.cookies.currentUser || null;
     try {
-        if (req.user) req.user = JSON.parse(req.user);
+        if (user) user = JSON.parse(user);
     }
     catch (e) {
         console.error(e);
-        res.cookie('currentUser', req.user = null);
+        console.error(`user: ${user}`);
+        res.cookie('currentUser', user = null);
     }
-    next();
+    
+    if (!user) {
+        req.user = null;
+        next();
+        return;
+    }
+    
+    User.findOne({ _id: user._id }, (err, actUser) => {
+        if (err) {
+            res.status(500).render('error', {req: req, utils: utils, title: 'Error', msg: 'An unknown error occurred in the extractUsePolicy'});
+            console.error(err);
+            return;
+        }
+        req.user = user = actUser;
+        res.cookie('currentUser', JSON.stringify(user));
+        next();
+        return;
+    });
 }
