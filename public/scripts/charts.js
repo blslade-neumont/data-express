@@ -43,8 +43,8 @@ function drawRect(x, y, w, h, color){
 }
 
 // draws text the color we say
-function drawText(str, x, y, color, horiz, vert){
-    currentContext.font="30px Verdana";
+function drawText(str, x, y, color, horiz, vert, font){
+    currentContext.font=font;
     currentContext.textAlign = horiz;
     currentContext.textBaseline = vert;
     currentContext.fillStyle = colorStr(color);
@@ -53,7 +53,7 @@ function drawText(str, x, y, color, horiz, vert){
 
 // draws the title for the chart
 function drawTitle(title){
-    drawText(title, CANVAS_WIDTH / 2, OFFSET, BLACK, "center", "middle");
+    drawText(title, CANVAS_WIDTH / 2, OFFSET, BLACK, "center", "middle", "30px Verdana");
 }
 
 // draws the background for the chart
@@ -65,7 +65,7 @@ function drawBackground(color){
 function drawBar(xPosCenter, percent, color, name){
     var h = percent * FULL_BAR_HEIGHT;
     drawRect(xPosCenter - BAR_WIDTH / 2, CANVAS_HEIGHT - h, BAR_WIDTH, h, color);
-    drawText(name, xPosCenter, CANVAS_HEIGHT - h - OFFSET, BLACK, "center", "center");
+    drawText(name, xPosCenter, CANVAS_HEIGHT - h - OFFSET, BLACK, "center", "center", "15px Verdana");
 }
 
 // draws the chart
@@ -98,22 +98,22 @@ function fmod(a, b) {
 
     currentContext = ctx1;
     sizeCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
-    drawChart(LIGHT_GREY, "Question 1", [{percent: q1a1, color: RED, name:"A1"},
-                                          {percent: q1a2, color: GREEN, name:"A2"},
-                                          {percent: q1a3, color: BLUE, name:"A3"},
-                                          {percent: q1a4, color: YELLOW, name:"A4"}]);
+    drawChart(LIGHT_GREY, "Ugliest Animal?", [{percent: q1a1, color: RED, name:"Drop Bear"},
+                                              {percent: q1a2, color: GREEN, name:"Blobfish"},
+                                              {percent: q1a3, color: BLUE, name:"Hairless Cat"},
+                                              {percent: q1a4, color: YELLOW, name:"Human"}]);
 
     currentContext = ctx2;
     sizeCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
-    drawChart(LIGHT_GREY, "Question 2", [{percent: q2a1, color: RED, name:"A1"},
-                                          {percent: q2a2, color: GREEN, name:"A2"},
-                                          {percent: q2a3, color: BLUE, name:"A3"},
-                                          {percent: q2a4, color: YELLOW, name:"A4"}]);
+    drawChart(LIGHT_GREY, "Most important coding aspect?", [{percent: q2a1, color: RED, name:"Types"},
+                                                            {percent: q2a2, color: GREEN, name:"Inheritance"},
+                                                            {percent: q2a3, color: BLUE, name:"Syntax"},
+                                                            {percent: q2a4, color: YELLOW, name:"Readability"}]);
 
     currentContext = ctx3;
     sizeCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
-    drawChart(LIGHT_GREY, "Question 3", [{percent: q3a1, color: RED, name:"A1"},
-                                          {percent: q3a2, color: GREEN, name:"A2"},
-                                          {percent: q3a3, color: BLUE, name:"A3"},
-                                          {percent: q3a4, color: YELLOW, name:"A4"}]);
+    drawChart(LIGHT_GREY, "20th President?", [{percent: q3a1, color: RED, name:"Theodore Roosevelt"},
+                                              {percent: q3a2, color: GREEN, name:"James Garfield"},
+                                              {percent: q3a3, color: BLUE, name:"Millard Fillmore"},
+                                              {percent: q3a4, color: YELLOW, name:"Herbert Hoover"}]);
 })();
